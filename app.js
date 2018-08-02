@@ -1,4 +1,4 @@
-const cat = {
+const mrSnibbly = {
     name: 'Mr. Snibbly',
     moods: [
       'Classy',
@@ -14,8 +14,7 @@ const cat = {
     pets: 0,
     moodIndex: 0
   }
-  
-  const cat = {
+  const mittens = {
     name: 'Mittens',
     moods: [
       'Sleepy',
@@ -31,36 +30,61 @@ const cat = {
     pets: 0,
     moodIndex: 0
   }
-
+  let activeCat = mrSnibbly
+  
+  let cats = [mrSnibbly, mittens]
+  
   const catImg = document.getElementById('cat-img')
   const catName = document.getElementById('name')
   const mood = document.getElementById('mood')
   const pets = document.getElementById('pets')
   const petButton = document.getElementById('pet-button')
-
+  
   function draw() {
-    catImg.setAttribute('src', cat.moodImgs[cat.moodIndex])
-    catName.innerText = cat.name
-    mood.innerText = cat.moods[cat.moodIndex]
-    pets.innerText = cat.pets.toString()
-    if (cat.pets >= cat.tolerance * 2) {
-        petButton.disabled = true;
+    catImg.setAttribute('src', activeCat.moodImgs[activeCat.moodIndex])
+    catName.innerText = activeCat.name
+    mood.innerText = activeCat.moods[activeCat.moodIndex]
+    pets.innerText = activeCat.pets.toString()
+    if (activeCat.pets >= activeCat.tolerance * 2) {
+      petButton.disabled = true;
     }
   }
   
   function pet() {
-    cat.pets++;
-    if (cat.pets % cat.tolerance == 0) {
-      cat.moodIndex++
+    activeCat.pets++;
+    if (activeCat.pets % activeCat.tolerance == 0) {
+      activeCat.moodIndex++
     }
     draw();
   }
   
   function reset() {
-   cat.pets = 0
-   cat.moodIndex = 0
+    activeCat.pets = 0
+    activeCat.moodIndex = 0
     petButton.disabled = false
     draw()
   }
   
+  
+  function drawButtons() {
+    let template = ""
+    for (let i = 0; i < cats.length; i++) {
+      const cat = cats[i];
+      template += `
+      <button onclick= "setActiveCat(${i})">${cat.name}
+      </button>
+      `
+  
+    }
+    document.getElementById("cat-buttons").innerHTML = template
+  }
+  
+  function setActiveCat(catIndex) {
+    activeCat = cats[catIndex]
+  
+    draw()
+  }
+  
+  
+  drawButtons()
   draw()
